@@ -1,78 +1,150 @@
-<p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
+# DNS Manager
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+## Instalação
 
-## About Laravel
+Requisitos 
+- Apache
+- PHP 7.2
+- Composer
+- Supervisor
+- git
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Baixar o repositório na máquina usando um usuário não root:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+```console
+$ git clone https://urldogit/dnsmanager.git
+```
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Entre no diretório do projeto e execute o comando composer:
+- Obs.: Por padrão o composer não executa usando o usuário root.
 
-## Learning Laravel
+```console
+$ composer install
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Após executar a intalação, copie o diretório da instalação para o local definitivo.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Configurando o aquivo .env
 
-## Laravel Sponsors
+Entre no diretório do projeto e copie o arquivo `.env.example` para `.env`
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+```console
+# cp .env.example .env
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- [UserInsights](https://userinsights.com)
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
-- [iMi digital](https://www.imi-digital.de/)
-- [Earthlink](https://www.earthlink.ro/)
-- [Steadfast Collective](https://steadfastcollective.com/)
-- [We Are The Robots Inc.](https://watr.mx/)
-- [Understand.io](https://www.understand.io/)
-- [Abdel Elrafa](https://abdelelrafa.com)
-- [Hyper Host](https://hyper.host)
-- [Appoly](https://www.appoly.co.uk)
-- [OP.GG](https://op.gg)
+Edite o arquivo .env apontando o banco de dados:
 
-## Contributing
+```ini
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=nome_do_banco
+DB_USERNAME=nome_do_usuario
+DB_PASSWORD=senha
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Para configurar usando Sqlite, crie um aquivo vazio no diretório `database`
 
-## Code of Conduct
+```console
+# touch database/database.sqlite
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Configure o arquivo `.env` da seguinte forma.
+```ini
+DB_CONNECTION=sqlite
+# DB_HOST=127.0.0.1
+# DB_PORT=3306
+# DB_DATABASE=database.sqlite
+# DB_USERNAME=nome_do_usuario
+# DB_PASSWORD=senha
+```
 
-## Security Vulnerabilities
+### Chave do aplicativo
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Gere uma chave para o aplicativo usando o seguinte comando.
 
-## License
+```console
+# php artisan key:generate
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+No aquivo `.env` será gerado uma chave de 32 caracteres na entrada `APP_KEY=`
+
+## Migração do banco
+
+Para gerar as tabelas do sistema no banco de dados, execute o seguinte comando:
+
+```console
+# php artisan make:migration --seed
+```
+
+### Diretório do DNS (named)
+
+No aquivo `.env`, configure o diretório raiz para salvar os arquivos de DNS.
+
+```ini
+DNS_PATH=/tmp
+```
+
+## Configuração do LDAP
+
+Configure as variáveis de ambiente do LDAP no aquivo `.env`
+
+```ini
+LDAP_HOST="host.dominio.com"
+LDAP_USER_GROUP="NomeDoGroupo"
+LDAP_DN="DC=host,DC=dominio,DC=com"
+LDAP_DOM="@dominio.com"
+```
+
+## Configuração do Apache
+
+Configure o apache apontando o diretório para o local de instalação do app.
+
+```apache
+<VirtualHost *:80>
+    DocumentRoot "/local/dnsmanager/public"
+    DirectoryIndex index.php
+    <Directory "/local/dnsmanager/public">
+        Options All
+        AllowOverride All
+        Order Allow,Deny
+        Allow from all
+    </Directory>
+</VirtualHost>
+```
+
+### Configuração das permissões nos diretórios
+
+Permissões gerais da aplicação.
+
+```console
+# chown -R root:root dnsmanager
+# find dnsmanager/ -type d -exec chmod 755  {} +
+# find dnsmanager/ -type f -exec chmod 644 {} +
+```
+
+Permissões do diretório storage da aplicação.
+
+```console
+# chown -R apache:apache dnsmanager/storage
+# find dnsmanager/storage -type d -exec chmod 775 {} +
+# find dnsmanager/storage -type f -exec chmod 666 {} +
+```
+
+Se estiver usando sqlite deve dar permissão de escrita no arquivo.
+
+Exemplo do arquivo dentro da pasta database no projeto:
+```console
+# chmod 775 dnsmanager/database/database.sqlite
+```
+
+## Inicialize os serviços
+Apache
+
+```console
+# systemctl start httpd
+
+ou
+
+# service httpd start
+```
