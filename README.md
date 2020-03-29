@@ -1,5 +1,14 @@
 # DNS Manager
 
+Gerenciador de DNS em Laravel para adicionar entradas de DNS em servidor Linux que usam BIND.
+
+Esse projeto foi adaptado de [Alexandre Moraes Matos](https://github.com/AlexandreMT).
+
+## Configurando um servidor Bind DNS no CentOS 7
+
+https://www.digitalocean.com/community/tutorials/how-to-configure-bind-as-a-private-network-dns-server-on-centos-7
+
+
 ## Instalação
 
 Requisitos 
@@ -12,7 +21,7 @@ Requisitos
 Baixar o repositório na máquina usando um usuário não root:
 
 ```console
-$ git clone https://urldogit/dnsmanager.git
+$ git clone https://github.com/naranma/dnsmanager.git
 ```
 
 Entre no diretório do projeto e execute o comando composer:
